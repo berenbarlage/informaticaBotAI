@@ -1,33 +1,33 @@
 import discord
-from discord.ext import commands
 
-TOKEN = 'MTA5NTczMDQ3ODMyNzI3OTcyMA.GrwORH.sDOXylbznFtkFS4WynAffbYR5knUHeiyYHg5DQ'
+class MyBot(discord.Client):
+    async def on_ready(self):
+        print(f"Logged in as {self.user}!")
 
-intents = discord.Intents.default()
-intents.typing = False
+    async def on_message(self, message):
+            if message.author == self.user:
+                return
 
-bot = commands.Bot(command_prefix='.', intents=intents)
+            if message.content.startswith("hallo"):
+                await message.channel.send("hoi, ik ben de COCO bot, als je hier een foto van je vogel instuurt kijk ik voor je welke soort het is")
 
+            if message.content.startswith("help"):
+                await message.channel.send("dit is de COCO bot hulpdesk."
+                                           "dit zijn de dingen waarmee de COCO bot u kan helpen "
+                                           " 1. fotos van vogels herkennen en onderscheiden. "
+                                           " 2. leuk terug reageren op hallo")
 
-@bot.event
-async def on_ready():
-    print('Bot is klaar')
-
-
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-
-    print(message.author, message.content, message.channel.id)
-
-    if message.attachments:
-        for attachment in message.attachments:
-            await attachment.save(attachment.filename)
-            print(f'Ontvangen bijlage: {attachment.filename}')
-
-    await bot.process_commands(message)
+            if message.content.startswith("welke vogelsoort is dit?"):
+                if message.attachments:
+                    await message.channel.send("bedankt voor het sturen van de foto, ik ga het nu 'uitvogelen'!")
+                else:
+                    await message.channel.send("stuur een foto bij het bericht 'welke vogelsoort is dit?' .")
 
 
-bot.run(TOKEN)
+
+
+intents = discord.Intents.all()
+client = MyBot(intents=intents)
+client.run("MTA5NTczMDQ3ODMyNzI3OTcyMA.GMfLgw.G-jH1eMryuFBUAYWoAM1t4YZxuqUKBH0outTIY")
+
 
