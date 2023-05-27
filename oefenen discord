@@ -1,0 +1,30 @@
+MTA5NTczMDQ3ODMyNzI3OTcyMA.GrwORH.sDOXylbznFtkFS4WynAffbYR5knUHeiyYHg5DQ
+import discord
+from discord.ext import commands
+
+# Maak een nieuw botobject aan
+bot = commands.Bot(command_prefix='!')
+
+# Event dat wordt geactiveerd wanneer de bot is verbonden en klaar is voor gebruik
+@bot.event
+async def on_ready():
+    print(f'Bot is verbonden met Discord als {bot.user.name}')
+
+# Event dat wordt geactiveerd wanneer een nieuw bericht wordt ontvangen
+@bot.event
+async def on_message(message):
+    # De bot moet niet reageren op zijn eigen berichten om een oneindige lus te voorkomen
+    if message.author == bot.user:
+        return
+
+    # Hier kan je logica toevoegen om te bepalen hoe de bot reageert op verschillende berichten
+    if message.content == 'ping':
+        await message.channel.send('pong')
+
+# Commando dat de bot kan gebruiken
+@bot.command()
+async def hello(ctx):
+    await ctx.send('Hallo, ik ben een Discord-bot!')
+
+# Voer je bot-token in tussen de aanhalingstekens
+bot.run('JOUW_BOT_TOKEN')
